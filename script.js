@@ -12,12 +12,33 @@ const gateError = document.getElementById('gateError');
 const logoutBtn = document.getElementById('logoutBtn');
 
 async function api(action, body = {}) {
-  const res = await fetch(API_BASE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...body, action, secretKey: localStorage.getItem('att_secret') || 'cyber vision' })
-  });
-  const data = await res.json();
+  let res;
+  try {
+    res = await fetch(API_BASE_URL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ ...body, action, secretKey: localStorage.getItem('att_secret') || 'cyber vision' })
+    });
+  } catch (fetchErr) {
+    throw new Error('Failed to fetch: unable to reach the backend API. Check your network connection and confirm the Google Apps Script web app is deployed with "Anyone" access.');
+  }
+
+  if (!res.ok) {
+    let msg = `Server error (${res.status})`;
+    try {
+      const data = await res.json();
+      msg = data.error || msg;
+    } catch (_) { /* non-JSON error response */ }
+    throw new Error(msg);
+  }
+
+  let data;
+  try {
+    data = await res.json();
+  } catch (_) {
+    throw new Error('Failed to fetch: backend returned an invalid response.');
+  }
   if (!data.ok) throw new Error(data.error || 'request failed');
   return data;
 }
