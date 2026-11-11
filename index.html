@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autonomous Attendance &amp; Alert Engine</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+<div id="pin-gate" class="gate">
+  <div class="gate-card">
+    <h1>Admin Access</h1>
+    <p>Enter admin PIN to unlock the dashboard.</p>
+    <input type="password" id="adminPin" placeholder="PIN" maxlength="10">
+    <button id="unlockBtn" class="btn-primary">Unlock</button>
+    <div id="gateError" class="error"></div>
+  </div>
+</div>
+
+<div id="dashboard" class="dashboard hidden">
+  <header>
+    <div class="brand">AUTONOMOUS ATTENDANCE &amp; ALERT ENGINE</div>
+    <div class="user">Admin</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="enroll">Enrollment</button>
+    <button class="tab" data-tab="scan">Attendance &amp; Scan</button>
+    <button class="tab" data-tab="students">Students &amp; Metrics</button>
+    <button class="tab" data-tab="manage">Management Overrides</button>
+    <button class="tab logout" id="logoutBtn">Logout</button>
+  </nav>
+
+  <section id="tab-enroll" class="tab-panel active">
+    <div class="card">
+      <h2>Enroll Student</h2>
+      <form id="enrollForm">
+        <div class="row">
+          <input type="text" id="eName" placeholder="Full Name" required>
+          <input type="tel" id="eMobile" placeholder="Mobile" required>
+        </div>
+        <div class="row">
+          <input type="text" id="eCourse" placeholder="Course" required>
+          <input type="email" id="eEmail" placeholder="Email" required>
+        </div>
+        <input type="date" id="eJoinDate" required>
+        <button type="submit" class="btn-primary">Enroll Student</button>
+      </form>
+      <div id="enrollResult" class="result"></div>
+    </div>
+  </section>
+
+  <section id="tab-scan" class="tab-panel hidden">
+    <div class="card scan-card">
+      <h2>Attendance &amp; Scan</h2>
+      <div class="scan-mode">
+        <button class="btn-outline active" id="modeScanner">QR Scanner</button>
+        <button class="btn-outline" id="modeManual">Manual Entry</button>
+      </div>
+
+      <div id="scannerView" class="scan-view active">
+        <div id="qr-reader"></div>
+        <div id="scanOverlay" class="scan-overlay hidden">
+          <div class="scan-overlay-content">
+            <div class="beep-dot"></div>
+            <h3 id="scanStatus">Scanning&hellip;</h3>
+            <p id="scanDetail">Student identified &mdash; attendance logged</p>
+          </div>
+        </div>
+        <div class="scan-hint">Point camera at student QR code</div>
+      </div>
+
+      <div id="manualView" class="scan-view hidden">
+        <div class="row">
+          <input type="text" id="mStudentId" placeholder="Enter ID (e.g. 1 or ENR-001)" maxlength="20">
+          <button type="button" class="btn-primary" id="btnManualScan">Mark Present</button>
+        </div>
+        <div class="scan-hint">Smart formatter: entering "1" auto-formats to "ENR-001"</div>
+      </div>
+
+      <div id="scanResult" class="result"></div>
+    </div>
+  </section>
+
+  <section id="tab-students" class="tab-panel hidden">
+    <div class="card">
+      <h2>Students &amp; Live Metrics</h2>
+      <div class="row">
+        <input type="text" id="sSearch" placeholder="Search by name or ID">
+        <button type="button" class="btn-outline" id="btnRefreshStudents">Refresh</button>
+      </div>
+      <div id="studentsList" class="students-list"></div>
+    </div>
+  </section>
+
+  <section id="tab-manage" class="tab-panel hidden">
+    <div class="card">
+      <h2>Management Overrides</h2>
+      <div class="row">
+        <input type="text" id="mOverrideId" placeholder="Student ID">
+        <button type="button" class="btn-danger" id="btnMarkCompleted">Mark Completed</button>
+      </div>
+      <div class="row">
+        <input type="text" id="mLeaveId" placeholder="Student ID">
+        <button type="button" class="btn-outline" id="btnMarkLeave">Mark Individual Leave (EXCUSED)</button>
+      </div>
+      <div class="row">
+        <input type="date" id="mHolidayDate">
+        <input type="text" id="mHolidayReason" placeholder="Reason">
+        <button type="button" class="btn-outline" id="btnMarkHoliday">Mark Holiday / Cancelled Class</button>
+      </div>
+      <div id="manageResult" class="result"></div>
+    </div>
+  </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
