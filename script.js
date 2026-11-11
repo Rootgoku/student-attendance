@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbxYmauz2VlyXPfBdP0VvkoKcUyJyhfwxbNmqThDv2kvc7deGTGxNo_ox7hjN0aabte0/exec';
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz_TxE7DLMS7OO8TaegjHoesiiugUUQ3w8NIYXkPO8WfusYyM5sivEDOEWTta8SayYp/exec';
 let ADMIN_PIN = '26918';
 let html5QrcodeScanner = null;
 let scanCooldown = false;
